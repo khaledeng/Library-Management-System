@@ -13,6 +13,7 @@ namespace project
         public string Author;
         public bool Availability = true;
 
+
         public Book(int iD, string title, string author)
         {
             ID = iD;
@@ -25,6 +26,5 @@ namespace project
             return $"Book Id : {ID} Book Title : {Title} Book Author : {Author} Book Availability :{Availability}";
 
         }
-
     }
 }
