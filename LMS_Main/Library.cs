@@ -1,15 +1,4 @@
-<<<<<<< HEAD
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LMS_Main
-{
-    internal class Library
-    {
-    }
-}
-﻿using project;
+using project;
 using System;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
@@ -21,7 +10,53 @@ namespace LMS_Main
     internal class Library
     {
         List<Book> Books = new List<Book>();
+        private List<Member> Members;
+        public Library()
+        {
+            Members = new List<Member>();
+        }
+        public void AddMember(Member member)
+        {
+            Members.Add(member);
+        }
+        public bool RemoveMember(int memberId)
+        {
+            for (int i = 0; i < Members.Count; i++)
+            {
+                if (Members[i].Id == memberId)
+                {
+                    Members.RemoveAt(i);
+                    return true;
+                }
+            }
+            return false;
+        }
 
+        public void MemberList()
+        {
+            if (Members.Count == 0)
+            {
+                Console.WriteLine("No members in library.");
+                return;
+            }
+            foreach (Member member in Members)
+            {
+                Console.WriteLine($"ID: {member.Id}, Name: {member.Name}, Borrowed Books: {member.BorrowedBooks.Count}");
+
+            }
+        }
+        public Member FindMember(int id)
+        {
+            foreach (var member in Members)
+            {
+                if (member.Id == id)
+                {
+                    return member;
+                }
+            }
+            return null;
+        }
+        
 
 
         public void AddBood(Book book)
@@ -59,4 +94,3 @@ namespace LMS_Main
 
 }
 
->>>>>>> 7e12835 (Update Book and add Library class)
