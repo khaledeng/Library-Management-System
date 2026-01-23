@@ -1,16 +1,44 @@
 ﻿using project;
+using System.Net;
 
 namespace LMS_Main
 {
     internal class Program
     {
+        static int intOnly()
+        {
+            int Book_Member_id = 0;
+            while (!int.TryParse(Console.ReadLine(), out Book_Member_id))
+            {
+                Console.WriteLine("Invalid input Please enter numbers only.");
+                Console.Write("Enter ID: ");
+            }
+            return Book_Member_id;
+        }
+
+        static string NotEmptyString()
+        {
+            string input = Console.ReadLine();
+            while (string.IsNullOrEmpty(input))
+            {
+                Console.WriteLine("Cant Be Null Here");
+                Console.Write("Enter The Field: ");
+                input = Console.ReadLine();
+            }
+
+            return input;
+        }
         static void Main(string[] args)
         {
+
             Library library = new Library();
             bool start = true;
-            int choice;
+            string choice;
+            int BookID = 0;
+            int MemberId = 0;
 
-            while(start)
+
+            while (start)
             {
                 Console.WriteLine("Library Management System");
                 Console.WriteLine("1. Add Book");
@@ -24,36 +52,82 @@ namespace LMS_Main
                 Console.WriteLine("9. Exit");
                 Console.Write("Select an option: ");
 
-                choice = int.Parse(Console.ReadLine());
+                choice = Console.ReadLine();
 
                 switch (choice)
                 {
-                    case 1:
+                    case "1":
                         Console.Write("Enter Book ID: ");
-                        int bookId = int.Parse(Console.ReadLine());
+                        BookID = intOnly();
                         Console.Write("Enter Title: ");
-                        string title = Console.ReadLine();
+                        string title = NotEmptyString();
                         Console.Write("Enter Author: ");
-                        string author = Console.ReadLine();
-                        library.AddBook(new Book(bookId, title, author));
+                        string author = NotEmptyString();
+                        library.AddBook(new Book(BookID, title, author));
                         break;
 
-                    case 2:
+                    case "2":
                         Console.Write("Enter Book ID: ");
-                        library.RemoveBooK(int.Parse(Console.ReadLine()));
+                        BookID = intOnly();
+                        library.RemoveBooK(BookID);
                         break;
 
-                    case 3:
+                    case "3":
                         Console.Write("Enter Member ID: ");
-                        int memberId = int.Parse(Console.ReadLine());
+                        MemberId = intOnly();
                         Console.Write("Enter Name: ");
                         string name = Console.ReadLine();
-                        library.AddMember(new Member(memberId, name));
+                        library.AddMember(new Member(MemberId, name));
                         break;
 
                     //case 4,5,6,7,8
+                    case "4":
+                        {
+                            Console.Write("Enter Member ID: ");
+                            MemberId = intOnly();
+                            if (library.FindMember(MemberId) != null)
+                            {
+                                library.RemoveMember(MemberId);
+                                break;
+                            }
 
-                    case 9:
+                            break;
+                        }
+                    case "5":
+                        {
+                            //if not found is trurn  actoin=> '' borrowed ''
+                            Console.Write("Enter Book ID:");
+                            BookID = intOnly();
+                            Console.Write("Enter MemberId ID:");
+                            MemberId = intOnly();
+
+                            library.BorrowBook(BookID, MemberId);
+                            break;
+
+                        }
+                    case "6":
+                        {
+                            Console.Write("Enter Book ID:");
+                            BookID = intOnly();
+
+                            Console.Write("Enter MemberId ID:");
+                            MemberId = intOnly();
+
+                            library.ReturnBook(BookID, MemberId);
+                            break;
+                        }
+                    case "7":
+                        {
+                            library.ListBooks();
+                            break;
+                        }
+                    case "8":
+                        {
+                            library.MemberList();
+                            break;
+                        }
+
+                    case "9":
                         start = false;
                         break;
 

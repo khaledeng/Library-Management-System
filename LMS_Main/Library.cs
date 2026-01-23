@@ -26,11 +26,13 @@ namespace LMS_Main
             {
                 if (Members[i].Id == memberId)
                 {
+                    //III
+                   Console.WriteLine($"Member {Members[i].Name} removed successfully.");
                     Members.RemoveAt(i);
-                    Console.WriteLine($"Member {Members[i].Name} removed successfully.");
                     return true;
                 }
             }
+    
             return false;
         }
 
@@ -56,6 +58,8 @@ namespace LMS_Main
                     return member;
                 }
             }
+            //III
+            Console.WriteLine($"Member have ID {id} Not Found");   
             return null;
         }
         
