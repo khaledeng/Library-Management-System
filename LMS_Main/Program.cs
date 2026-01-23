@@ -76,7 +76,7 @@ namespace LMS_Main
                         Console.Write("Enter Member ID: ");
                         MemberId = intOnly();
                         Console.Write("Enter Name: ");
-                        string name = Console.ReadLine();
+                        string name = NotEmptyString();
                         library.AddMember(new Member(MemberId, name));
                         break;
 
