@@ -19,6 +19,7 @@ namespace LMS_Main
         public void BorrowBook(Book book)
         {
             BorrowedBooks.Add(book);
+            book.Availability = false;
         }
 
         public bool ReturnBook(int bookId)
@@ -27,7 +28,8 @@ namespace LMS_Main
             {
                 if (BorrowedBooks[i].ID == bookId)
                 {
-                    BorrowedBooks.RemoveAt(i);//
+                    BorrowedBooks[i].Availability = true;
+                    BorrowedBooks.RemoveAt(i);
                     return true;
                 }
             }

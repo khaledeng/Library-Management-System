@@ -23,7 +23,7 @@ namespace project
         }
         public override string ToString()
         {
-            return $"Book Id : {ID} Book Title : {Title} Book Author : {Author} Book Availability :{Availability}";
+            return $"ID : {ID} , Title : {Title} , Author : {Author} , Availability :{Availability}";
 
         }
     }

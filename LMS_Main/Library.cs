@@ -18,6 +18,7 @@ namespace LMS_Main
         public void AddMember(Member member)
         {
             Members.Add(member);
+            Console.WriteLine($"Member '{member.Name}' added successfully.");
         }
         public bool RemoveMember(int memberId)
         {
@@ -26,6 +27,7 @@ namespace LMS_Main
                 if (Members[i].Id == memberId)
                 {
                     Members.RemoveAt(i);
+                    Console.WriteLine($"Member {Members[i].Name} removed successfully.");
                     return true;
                 }
             }
@@ -59,22 +61,19 @@ namespace LMS_Main
         
 
 
-        public void AddBood(Book book)
+        public void AddBook(Book book)
         {
             foreach (Book b in Books)
             {
                 if (b.ID == book.ID)
 
                 {
-                        Console.WriteLine("Book already exists.");
-                   
-                }
-                else
-                {
-                    Books.Add(book);
-                    Console.WriteLine("Book added successfuly.");
+                    Console.WriteLine("Book already exists.");
+                    return ;                 
                 }
             }
+            Books.Add(book);
+            Console.WriteLine($"Book '{book.Title}' added successfuly.");
         }
         public void RemoveBooK(int id)
         {
@@ -85,11 +84,101 @@ namespace LMS_Main
                     Books.Remove(b);
 
                     Console.WriteLine("Book removed successfully.");
+                    return;
                 }
             }
+
+            Console.WriteLine("You are trying to delete a book that does not exist.");
         }
 
-        
+        public void BorrowBook(int BookId,int MemberId)
+        {
+            Book book = new Book(0,"","");
+            Member member = new Member(0,"");
+
+            foreach(Book b in Books)
+            {
+                if(b.ID == BookId)
+                {
+
+                    book=b;
+                    break;
+                }
+            }
+
+            foreach(Member m  in Members)
+            {
+                if(m.Id == MemberId)
+                {
+                    member=m; 
+                    break;
+                }
+            }
+
+
+            if(member == null || book == null)
+            {
+                Console.WriteLine("Book or Member not found.");
+                return;
+            }
+
+            if (!book.Availability)
+            {
+                Console.WriteLine("Book is not available.");
+                return;
+            }
+
+            member.BorrowBook(book);
+            Console.WriteLine($"{member.Name} borrowed '{book.Title}'.");
+        }
+
+        public void ReturnBook(int BookId,int MemberId)
+        {
+            Book book = new Book(0, "", "");
+            Member member = new Member(0, "");
+
+            foreach (Book b in Books)
+            {
+                if (b.ID == BookId)
+                {
+                    book = b;
+                    break;
+                }
+            }
+
+            foreach (Member m in Members)
+            {
+                if (m.Id == MemberId)
+                {
+                    member = m;
+                    break;
+                }
+            }
+
+
+            if (member == null)
+            {
+                Console.WriteLine("Member not found.");
+                return;
+            }
+
+            if (member.ReturnBook(BookId))
+            {
+                Console.WriteLine($"{member.Name} returned '{book.Title}'.");
+                return;
+            }
+
+            Console.WriteLine("Book not found in borrowed list.");
+        }
+
+        public void ListBooks()
+        {
+            Console.WriteLine("Books in Library:");
+            foreach (Book book in Books)
+            {
+                Console.WriteLine(book);
+            }
+        }
     }
 
 }
