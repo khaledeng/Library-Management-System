@@ -35,8 +35,13 @@ namespace LMS_Main
             {
                 if (Members[i].Id == memberId)
                 {
+                    if (Members[i].BorrowedBooks.Count != 0)
+                    {
+                        Console.WriteLine("A member with borrowed books cannot be deleted\n");
+                        return false;
+                    }
                     //III
-                   Console.WriteLine($"Member '{Members[i].Name}' removed successfully.\n");
+                    Console.WriteLine($"Member '{Members[i].Name}' removed successfully.\n");
                     Members.RemoveAt(i);
                     return true;
                 }
@@ -95,8 +100,13 @@ namespace LMS_Main
             {
                 if (b.ID == id)
                 {
-                    Books.Remove(b);
+                    if (b.Availability == false)
+                    {
+                        Console.WriteLine("The borrowed book cannot be deleted\n");
+                        return;
+                    }
 
+                    Books.Remove(b);
                     Console.WriteLine("Book removed successfully.\n");
                     return;
                 }
