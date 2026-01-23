@@ -132,7 +132,7 @@ namespace LMS_Main
                         break;
 
                     default:
-                        Console.WriteLine("Invalid option. Try again.");
+                        Console.WriteLine("Invalid option. Try again.\n");
                         break;
                 }
             }

@@ -17,8 +17,17 @@ namespace LMS_Main
         }
         public void AddMember(Member member)
         {
+            foreach (Member m in Members)
+            {
+                if (m.Id == member.Id)
+                {
+                    Console.WriteLine("ID must be unique.\n");
+                    return;
+                }
+            }
+
             Members.Add(member);
-            Console.WriteLine($"Member '{member.Name}' added successfully.");
+            Console.WriteLine($"Member '{member.Name}' added successfully.\n");
         }
         public bool RemoveMember(int memberId)
         {
@@ -27,7 +36,7 @@ namespace LMS_Main
                 if (Members[i].Id == memberId)
                 {
                     //III
-                   Console.WriteLine($"Member {Members[i].Name} removed successfully.");
+                   Console.WriteLine($"Member '{Members[i].Name}' removed successfully.\n");
                     Members.RemoveAt(i);
                     return true;
                 }
@@ -40,7 +49,7 @@ namespace LMS_Main
         {
             if (Members.Count == 0)
             {
-                Console.WriteLine("No members in library.");
+                Console.WriteLine("No members in library.\n");
                 return;
             }
             foreach (Member member in Members)
@@ -48,6 +57,7 @@ namespace LMS_Main
                 Console.WriteLine($"ID: {member.Id}, Name: {member.Name}, Borrowed Books: {member.BorrowedBooks.Count}");
 
             }
+            Console.WriteLine();
         }
         public Member FindMember(int id)
         {
@@ -59,7 +69,7 @@ namespace LMS_Main
                 }
             }
             //III
-            Console.WriteLine($"Member have ID {id} Not Found");   
+            Console.WriteLine($"Member have ID {id} Not Found\n");   
             return null;
         }
         
@@ -72,12 +82,12 @@ namespace LMS_Main
                 if (b.ID == book.ID)
 
                 {
-                    Console.WriteLine("Book already exists.");
+                    Console.WriteLine("ID must be unique.\n");
                     return ;                 
                 }
             }
             Books.Add(book);
-            Console.WriteLine($"Book '{book.Title}' added successfuly.");
+            Console.WriteLine($"Book '{book.Title}' added successfuly.\n");
         }
         public void RemoveBooK(int id)
         {
@@ -87,12 +97,12 @@ namespace LMS_Main
                 {
                     Books.Remove(b);
 
-                    Console.WriteLine("Book removed successfully.");
+                    Console.WriteLine("Book removed successfully.\n");
                     return;
                 }
             }
 
-            Console.WriteLine("You are trying to delete a book that does not exist.");
+            Console.WriteLine("You are trying to delete a book that does not exist.\n");
         }
 
         public void BorrowBook(int BookId,int MemberId)
@@ -122,18 +132,18 @@ namespace LMS_Main
 
             if(member == null || book == null)
             {
-                Console.WriteLine("Book or Member not found.");
+                Console.WriteLine("Book or Member not found.\n");
                 return;
             }
 
             if (!book.Availability)
             {
-                Console.WriteLine("Book is not available.");
+                Console.WriteLine("Book is not available.\n");
                 return;
             }
 
             member.BorrowBook(book);
-            Console.WriteLine($"{member.Name} borrowed '{book.Title}'.");
+            Console.WriteLine($"{member.Name} borrowed '{book.Title}'.\n");
         }
 
         public void ReturnBook(int BookId,int MemberId)
@@ -162,17 +172,17 @@ namespace LMS_Main
 
             if (member == null)
             {
-                Console.WriteLine("Member not found.");
+                Console.WriteLine("Member not found.\n");
                 return;
             }
 
             if (member.ReturnBook(BookId))
             {
-                Console.WriteLine($"{member.Name} returned '{book.Title}'.");
+                Console.WriteLine($"{member.Name} returned '{book.Title}'.\n");
                 return;
             }
 
-            Console.WriteLine("Book not found in borrowed list.");
+            Console.WriteLine("Book not found in borrowed list.\n");
         }
 
         public void ListBooks()
@@ -182,6 +192,7 @@ namespace LMS_Main
             {
                 Console.WriteLine(book);
             }
+            Console.WriteLine();
         }
     }
 
