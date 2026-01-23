@@ -97,8 +97,8 @@ namespace LMS_Main
 
         public void BorrowBook(int BookId,int MemberId)
         {
-            Book book = new Book(0,"","");
-            Member member = new Member(0,"");
+            Book book =null;
+            Member member=null ;
 
             foreach(Book b in Books)
             {
@@ -138,8 +138,8 @@ namespace LMS_Main
 
         public void ReturnBook(int BookId,int MemberId)
         {
-            Book book = new Book(0, "", "");
-            Member member = new Member(0, "");
+            Book book =null;
+            Member member = null;
 
             foreach (Book b in Books)
             {
