@@ -5,134 +5,129 @@ namespace LMS_Main
 {
     internal class Program
     {
-        static int intOnly()
+        static ConsoleColor inputColor = ConsoleColor.Yellow;
+        static ConsoleColor outputColor = ConsoleColor.Cyan;
+
+        private static void PrintColored(string message, ConsoleColor color)
         {
-            int Book_Member_id = 0;
-            while (!int.TryParse(Console.ReadLine(), out Book_Member_id))
-            {
-                Console.WriteLine("Invalid input Please enter numbers only.");
-                Console.Write("Enter ID: ");
-            }
-            return Book_Member_id;
+            Console.ForegroundColor = color;
+            Console.WriteLine(message);
+            Console.ResetColor();
         }
 
-        static string NotEmptyString()
+        private static string ReadColored(string prompt, ConsoleColor color)
         {
-            string input = Console.ReadLine();
+            Console.ForegroundColor = color;
+            Console.Write(prompt);
+            Console.ResetColor();
+            return Console.ReadLine();
+        }
+
+        private static int ReadIntColored(string prompt, ConsoleColor color)
+        {
+            int value;
+            while (true)
+            {
+                Console.ForegroundColor = color;
+                Console.Write(prompt);
+                Console.ResetColor();
+
+                if (int.TryParse(Console.ReadLine(), out value))
+                    break;
+                else
+                    PrintColored("Invalid input. Please enter numbers only.", ConsoleColor.Red);
+            }
+            return value;
+        }
+
+        private static string ReadNotEmptyColored(string prompt, ConsoleColor color)
+        {
+            string input = ReadColored(prompt, color);
             while (string.IsNullOrEmpty(input))
             {
-                Console.WriteLine("Cant Be Null Here");
-                Console.Write("Enter The Field: ");
-                input = Console.ReadLine();
+                PrintColored("Cannot be empty.", ConsoleColor.Red);
+                input = ReadColored(prompt, color);
             }
-
             return input;
         }
+
         static void Main(string[] args)
         {
-
             Library library = new Library();
             bool start = true;
             string choice;
             int BookID = 0;
             int MemberId = 0;
 
-
             while (start)
             {
-                Console.WriteLine("Library Management System");
-                Console.WriteLine("1. Add Book");
-                Console.WriteLine("2. Remove Book");
-                Console.WriteLine("3. Add Member");
-                Console.WriteLine("4. Remove Member");
-                Console.WriteLine("5. Borrow Book");
-                Console.WriteLine("6. Return Book");
-                Console.WriteLine("7. List Books");
-                Console.WriteLine("8. List Members");
-                Console.WriteLine("9. Exit");
-                Console.Write("Select an option: ");
+                PrintColored("Library Management System", outputColor);
+                PrintColored("1. Add Book", outputColor);
+                PrintColored("2. Remove Book", outputColor);
+                PrintColored("3. Add Member", outputColor);
+                PrintColored("4. Remove Member", outputColor);
+                PrintColored("5. Borrow Book", outputColor);
+                PrintColored("6. Return Book", outputColor);
+                PrintColored("7. List Books", outputColor);
+                PrintColored("8. List Members", outputColor);
+                PrintColored("9. Exit", outputColor);
 
-                choice = Console.ReadLine();
+                choice = ReadColored("Select an option: ", inputColor);
 
                 switch (choice)
                 {
                     case "1":
-                        Console.Write("Enter Book ID: ");
-                        BookID = intOnly();
-                        Console.Write("Enter Title: ");
-                        string title = NotEmptyString();
-                        Console.Write("Enter Author: ");
-                        string author = NotEmptyString();
+                        BookID = ReadIntColored("Enter Book ID: ", inputColor);
+                        string title = ReadNotEmptyColored("Enter Title: ", inputColor);
+                        string author = ReadNotEmptyColored("Enter Author: ", inputColor);
                         library.AddBook(new Book(BookID, title, author));
                         break;
 
                     case "2":
-                        Console.Write("Enter Book ID: ");
-                        BookID = intOnly();
+                        BookID = ReadIntColored("Enter Book ID: ", inputColor);
                         library.RemoveBooK(BookID);
                         break;
 
                     case "3":
-                        Console.Write("Enter Member ID: ");
-                        MemberId = intOnly();
-                        Console.Write("Enter Name: ");
-                        string name = NotEmptyString();
+                        MemberId = ReadIntColored("Enter Member ID: ", inputColor);
+                        string name = ReadNotEmptyColored("Enter Name: ", inputColor);
                         library.AddMember(new Member(MemberId, name));
                         break;
 
-                    //case 4,5,6,7,8
                     case "4":
+                        MemberId = ReadIntColored("Enter Member ID: ", inputColor);
+                        if (library.FindMember(MemberId) != null)
                         {
-                            Console.Write("Enter Member ID: ");
-                            MemberId = intOnly();
-                            if (library.FindMember(MemberId) != null)
-                            {
-                                library.RemoveMember(MemberId);
-                                break;
-                            }
-
-                            break;
+                            library.RemoveMember(MemberId);
                         }
+                        break;
+
                     case "5":
-                        {
-                            //if not found is trurn  actoin=> '' borrowed ''
-                            Console.Write("Enter Book ID:");
-                            BookID = intOnly();
-                            Console.Write("Enter MemberId ID:");
-                            MemberId = intOnly();
+                        BookID = ReadIntColored("Enter Book ID: ", inputColor);
+                        MemberId = ReadIntColored("Enter Member ID: ", inputColor);
+                        library.BorrowBook(BookID, MemberId);
+                        break;
 
-                            library.BorrowBook(BookID, MemberId);
-                            break;
-
-                        }
                     case "6":
-                        {
-                            Console.Write("Enter Book ID:");
-                            BookID = intOnly();
+                        BookID = ReadIntColored("Enter Book ID: ", inputColor);
+                        MemberId = ReadIntColored("Enter Member ID: ", inputColor);
+                        library.ReturnBook(BookID, MemberId);
+                        break;
 
-                            Console.Write("Enter MemberId ID:");
-                            MemberId = intOnly();
-
-                            library.ReturnBook(BookID, MemberId);
-                            break;
-                        }
                     case "7":
-                        {
-                            library.ListBooks();
-                            break;
-                        }
+                        library.ListBooks();
+                        break;
+
                     case "8":
-                        {
-                            library.MemberList();
-                            break;
-                        }
+                        library.MemberList();
+                        break;
 
                     case "9":
                         start = false;
                         break;
 
                     default:
-                        Console.WriteLine("Invalid option. Try again.\n");
+                        PrintColored("Invalid option. Try again.\n", ConsoleColor.Red);
                         break;
                 }
             }

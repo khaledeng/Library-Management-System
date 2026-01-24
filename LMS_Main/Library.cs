@@ -7,10 +7,25 @@ using static System.Reflection.Metadata.BlobBuilder;
 
 namespace LMS_Main
 {
+
     internal class Library
     {
+        #region coloring
+        private void PrintColored(string message, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(message);
+            Console.ResetColor();
+        } 
+        #endregion
+
+
+
         List<Book> Books = new List<Book>();
         private List<Member> Members;
+
+        private const int MaxBooksPerMember = 3;
+
         public Library()
         {
             Members = new List<Member>();
@@ -21,13 +36,13 @@ namespace LMS_Main
             {
                 if (m.Id == member.Id)
                 {
-                    Console.WriteLine("ID must be unique.\n");
+                    PrintColored("ID must be unique.\n", ConsoleColor.Red);
                     return;
                 }
             }
 
             Members.Add(member);
-            Console.WriteLine($"Member '{member.Name}' added successfully.\n");
+            PrintColored($"Member '{member.Name}' added successfully.\n", ConsoleColor.Green);
         }
         public bool RemoveMember(int memberId)
         {
@@ -37,11 +52,11 @@ namespace LMS_Main
                 {
                     if (Members[i].BorrowedBooks.Count != 0)
                     {
-                        Console.WriteLine("A member with borrowed books cannot be deleted\n");
+                        PrintColored("A member with borrowed books cannot be deleted\n", ConsoleColor.Red);
                         return false;
                     }
-                    //III
-                    Console.WriteLine($"Member '{Members[i].Name}' removed successfully.\n");
+
+                    PrintColored($"Member '{Members[i].Name}' removed successfully.\n", ConsoleColor.Green);
                     Members.RemoveAt(i);
                     return true;
                 }
@@ -54,12 +69,12 @@ namespace LMS_Main
         {
             if (Members.Count == 0)
             {
-                Console.WriteLine("No members in library.\n");
+                PrintColored("No members in library.\n", ConsoleColor.Red);
                 return;
             }
             foreach (Member member in Members)
             {
-                Console.WriteLine($"ID: {member.Id}, Name: {member.Name}, Borrowed Books: {member.BorrowedBooks.Count}");
+                PrintColored($"ID: {member.Id}, Name: {member.Name}, Borrowed Books: {member.BorrowedBooks.Count}", ConsoleColor.Magenta);
 
             }
             Console.WriteLine();
@@ -74,7 +89,7 @@ namespace LMS_Main
                 }
             }
             //III
-            Console.WriteLine($"Member have ID {id} Not Found\n");   
+            PrintColored($"Member with ID {id} not found.\n", ConsoleColor.Red);
             return null;
         }
         
@@ -87,12 +102,12 @@ namespace LMS_Main
                 if (b.ID == book.ID)
 
                 {
-                    Console.WriteLine("ID must be unique.\n");
-                    return ;                 
+                    PrintColored("ID must be unique.\n", ConsoleColor.Red);
+                    return;                 
                 }
             }
             Books.Add(book);
-            Console.WriteLine($"Book '{book.Title}' added successfuly.\n");
+            PrintColored($"Book '{book.Title}' added successfully.\n", ConsoleColor.Green);
         }
         public void RemoveBooK(int id)
         {
@@ -102,18 +117,18 @@ namespace LMS_Main
                 {
                     if (b.Availability == false)
                     {
-                        Console.WriteLine("The borrowed book cannot be deleted\n");
+                        PrintColored("The borrowed book cannot be deleted.\n", ConsoleColor.Red);
                         return;
                     }
 
                     Books.Remove(b);
-                    Console.WriteLine("Book removed successfully.\n");
+                    PrintColored("Book removed successfully.\n", ConsoleColor.Green);
                     return;
                 }
             }
 
-            Console.WriteLine("You are trying to delete a book that does not exist.\n");
-        }
+            PrintColored("You are trying to delete a book that does not exist.\n", ConsoleColor.Red);
+            }
 
         public void BorrowBook(int BookId,int MemberId)
         {
@@ -139,21 +154,26 @@ namespace LMS_Main
                 }
             }
 
-
             if(member == null || book == null)
             {
-                Console.WriteLine("Book or Member not found.\n");
+                PrintColored("Book or Member not found.\n", ConsoleColor.Red);
+                return;
+            }
+
+            if (member.BorrowedBooks.Count >= MaxBooksPerMember)
+            {
+                PrintColored("Member has reached the maximum number of borrowed books.\n", ConsoleColor.Yellow);
                 return;
             }
 
             if (!book.Availability)
             {
-                Console.WriteLine("Book is not available.\n");
+                PrintColored("Book is not available.\n", ConsoleColor.Red);
                 return;
             }
 
             member.BorrowBook(book);
-            Console.WriteLine($"{member.Name} borrowed '{book.Title}'.\n");
+            PrintColored($"{member.Name} borrowed '{book.Title}'.\n", ConsoleColor.Green);
         }
 
         public void ReturnBook(int BookId,int MemberId)
@@ -182,25 +202,25 @@ namespace LMS_Main
 
             if (member == null)
             {
-                Console.WriteLine("Member not found.\n");
+                PrintColored("Member not found.\n", ConsoleColor.Red);
                 return;
             }
 
             if (member.ReturnBook(BookId))
             {
-                Console.WriteLine($"{member.Name} returned '{book.Title}'.\n");
+                PrintColored($"{member.Name} returned '{book.Title}'.\n", ConsoleColor.Green);
                 return;
             }
 
-            Console.WriteLine("Book not found in borrowed list.\n");
+            PrintColored("Book not found in borrowed list.\n", ConsoleColor.Red);
         }
 
         public void ListBooks()
         {
-            Console.WriteLine("Books in Library:");
+            PrintColored("Books in Library:", ConsoleColor.Magenta);
             foreach (Book book in Books)
             {
-                Console.WriteLine(book);
+                PrintColored(book.ToString(), ConsoleColor.Magenta);
             }
             Console.WriteLine();
         }
