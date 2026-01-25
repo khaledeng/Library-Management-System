@@ -36,7 +36,4 @@ The project is divided into the following classes:
   - Contains the main menu
   - Handles user interaction via console
 
-## ▶️ How to Run
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/library-management-system.git
+
